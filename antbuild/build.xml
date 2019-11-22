@@ -12,13 +12,16 @@
     <property name="jar" value="${project_name}.jar"/>
     <property name="mainclass" value="malt.MaltBuild"/>
 
+    <property environment="env"/>
+
     <!-- class path -->
 
     <path id="build.classpath">
     	    <fileset dir="../../jloda/jars"  includes="*.jar"/>
-	    <fileset dir="../../jloda/jars/batik-1.8"  includes="*.jar"/>
     	    <fileset dir="../../megan-ce/jars"  includes="*.jar"/>
 	    <fileset dir="../../megan-ce/jars/megan6server"  includes="*.jar"/>
+	    <fileset dir="../dist" includes="*.jar"/>
+ 	    <fileset dir="${env.PATH_TO_FX}" includes="*.jar"/>
     </path>
 
     <!-- init -->
@@ -38,8 +41,6 @@
     <!-- copy sources -->
     <target name="copy_sources" depends="copy_resources">
         <copy todir="${srcDir}">
-            <fileset dir="${jlodaSrcDir}" excludes="com/apple/**"/>
-            <fileset dir="${meganSrcDir}"/>
             <fileset dir="${maltSrcDir}"/>
         </copy>
     </target>
@@ -49,10 +50,10 @@
         <javac srcdir="${srcDir}"
                destdir="${classDir}"
                debug="on"
-               compiler="javac1.7"
                classpathref="build.classpath"
-               source="1.7"
-               target="1.7"
+	       modulepathref="build.classpath"
+               source="11"
+               target="11"
                includeantruntime="false"
                 />
     </target>
