@@ -112,13 +112,15 @@ public class ReferencesHashTableBuilder {
         // maxHitsPerHash = (int)Math.max(1, maxHitPerSeed * averageWordsPerHashValue);
         System.err.println("maxHitsPerHash set to: " + maxHitsPerHash);
 
-        final ProgressPercentage progress = new ProgressPercentage("Initializing arrays...");
+        final ProgressPercentage progress = new ProgressPercentage("Initializing lock array...", syncObjects.length);
 
         for (int i = 0; i < syncObjects.length; i++) {
             syncObjects[i] = new Object();
+            progress.incrementProgress();
         }
 
         progress.reportTaskCompleted();
+        progress.close();
     }
 
     /**
@@ -134,18 +136,17 @@ public class ReferencesHashTableBuilder {
         tableDataPutter = new IntFilePutter(tableDataFile, limit + 1, buildTableInMemory); // limit+1 because we start with index 1
         fillTable(referencesDB, numberOfThreads);
         randomizeBuildRows(numberOfThreads);
-        saveTableIndex(tableIndex, tableIndexFile);
+        saveTableIndex(tableIndexFile);
         tableIndex = null;
         tableDataPutter.close();
     }
 
     /**
-     * save the table index
-     * @param tableIndex
+     * save the table index     
      * @param tableIndexFile
      * @throws IOException
      */
-    private void saveTableIndex(long[] tableIndex, File tableIndexFile) throws IOException {
+    private void saveTableIndex(File tableIndexFile) throws IOException {
         final ProgressPercentage progress = new ProgressPercentage("Writing file: " + tableIndexFile, tableIndex.length);
         try (OutputWriter outs = new OutputWriter(tableIndexFile)) {
             for (long value : tableIndex) {
@@ -153,6 +154,7 @@ public class ReferencesHashTableBuilder {
                 progress.incrementProgress();
             }
         }
+        progress.reportTaskCompleted();
         progress.close();
     }
 
@@ -286,6 +288,7 @@ public class ReferencesHashTableBuilder {
             progressPercentage.setProgress(Basic.getSum(countsForProgress));
         }
         progressPercentage.reportTaskCompleted();
+        progressPercentage.close();
         System.err.println(String.format("Total keys used:    %,14d", Basic.getSum(totalKeys)));
         System.err.println(String.format("Total seeds matched:%,14d", Basic.getSum(totalSeeds)));
         System.err.println(String.format("Total seeds dropped:%,14d", Basic.getSum(totalDropped)));
@@ -362,6 +365,7 @@ public class ReferencesHashTableBuilder {
             progressPercentage.setProgress(Basic.getSum(countsForProgress));
         }
         progressPercentage.reportTaskCompleted();
+        progressPercentage.close();
 
         // shut down threads:
         executor.shutdownNow();
@@ -421,7 +425,7 @@ public class ReferencesHashTableBuilder {
             progressPercentage.setProgress(Basic.getSum(countsForProgress));
         }
         progressPercentage.reportTaskCompleted();
-
+        progressPercentage.close();
         // shut down threads:
         executor.shutdownNow();
     }
@@ -479,6 +483,7 @@ public class ReferencesHashTableBuilder {
             outs.write(shapeBytes);
         } finally {
             progressPercentage.reportTaskCompleted();
+            progressPercentage.close();
 
         }
     }
