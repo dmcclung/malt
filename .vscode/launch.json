@@ -14,7 +14,7 @@
             "request": "launch",
             "mainClass": "malt.MaltBuild",
             "projectName": "malt",
-            "args": "--input est_mouse.gz --index malt-nt --sequenceType DNA"
+            "args": "--input est_mouse.gz --index malt-nt --sequenceType DNA --buildTableInMemory false"
         },
         {
             "type": "java",
