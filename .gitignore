@@ -1,35 +1,5 @@
-# Class files
-class/
-*.class
+# Ignore Gradle project-specific cache directory
+.gradle
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# intellij 
-*.iml
-.idea
-
-#eclipse
-.settings
-.classpath
-.project
-
-# MacOS
-.DS_Store
-
-# LaTeX auxiliary files 
-*.aux
-*.blg
-*.idx
-*.ilg
-*.ind
-*.log
-*.out
-*.toc
-
-# antbuild:
-antbuild/*.jar
-antbuild/*rename*
-antbuild/*shrink*
-antbuild/src/
-antbuild/classes/
+# Ignore Gradle build output directory
+build
