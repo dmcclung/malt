@@ -1,0 +1,28 @@
+{
+    "configurations": [        
+        {
+            "type": "java",
+            "name": "MaltBuild - drosoph.nt.gz - 35mb",
+            "request": "launch",
+            "mainClass": "malt.MaltBuild",
+            "projectName": "malt",
+            "args": "--input drosoph.nt.gz --index malt-nt --sequenceType DNA"
+        },
+        {
+            "type": "java",
+            "name": "MaltBuild - est_mouse.gz - 740mb",
+            "request": "launch",
+            "mainClass": "malt.MaltBuild",
+            "projectName": "malt",
+            "args": "--input est_mouse.gz --index malt-nt --sequenceType DNA"
+        },
+        {
+            "type": "java",
+            "name": "MaltBuild - Help",
+            "request": "launch",
+            "mainClass": "malt.MaltBuild",
+            "projectName": "malt",
+            "args": "-h"
+        }
+    ]
+}
